@@ -5,7 +5,7 @@ import 'blockly/javascript';
 // Blockly.setLocale(zhHans);
 
 import type { CharacterAI, Rule, Condition, Action } from '../types/ai';
-import { ConditionType, ActionType } from '../types/ai';
+// import { ConditionType, ActionType } from '../types/ai';
 
 /**
  * 生成唯一ID

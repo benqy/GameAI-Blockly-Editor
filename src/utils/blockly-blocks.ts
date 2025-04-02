@@ -1,5 +1,5 @@
 import * as Blockly from 'blockly';
-import { ConditionType, ActionType } from '../types/ai';
+// import { ConditionType, ActionType } from '../types/ai';
 
 /**
  * 注册自定义Blockly块
