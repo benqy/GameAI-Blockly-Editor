@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import * as Blockly from 'blockly';
-import { initBlockly, exportToJson } from '../../utils/blockly-utils';
+import { initBlockly, exportToJson, importFromJson } from '../../utils/blockly-utils';
 import { registerCustomBlocks } from '../../utils/blockly-blocks';
 import { getExampleAI } from '../../utils/ai-examples';
 import type { CharacterAI } from '../../types/ai';
@@ -62,13 +62,12 @@ const clearWorkspace = () => {
 const loadExample = () => {
   if (workspace) {
     if (confirm('这将清除当前工作区并加载示例AI，确定要继续吗？')) {
-      workspace.clear();
       const exampleAI = getExampleAI();
-      // 这里我们应该将示例AI转换为Blockly块
-      // 这需要一个更复杂的实现，暂时不展开
-      // 但实际上我们需要根据AI数据创建对应的积木块
       
-      // 简单起见，我们只显示其JSON输出
+      // 从示例AI数据创建Blockly块
+      importFromJson(workspace, exampleAI);
+      
+      // 显示JSON输出
       jsonOutput.value = JSON.stringify(exampleAI, null, 2);
       showJson.value = true;
     }
@@ -104,12 +103,11 @@ const loadAI = () => {
     
     if (confirm('这将清除当前工作区并加载保存的AI，确定要继续吗？')) {
       const aiData = JSON.parse(dataStr) as CharacterAI;
-      workspace.clear();
       
-      // 这里我们应该将AI数据转换为Blockly块
-      // 这需要一个更复杂的实现，暂时不展开
+      // 从保存的AI数据创建Blockly块
+      importFromJson(workspace, aiData);
       
-      // 简单起见，我们只显示其JSON输出
+      // 显示JSON输出
       jsonOutput.value = JSON.stringify(aiData, null, 2);
       showJson.value = true;
       
