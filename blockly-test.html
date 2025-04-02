@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blockly测试</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    #blocklyDiv {
+      height: 600px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="blocklyDiv"></div>
+
+  <script type="module">
+    import * as Blockly from 'https://unpkg.com/blockly/index.js';
+    import 'https://unpkg.com/blockly/msg/zh-hans.js';
+
+    // 自定义规则块
+    Blockly.Blocks['rule_block'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("规则")
+            .appendField(new Blockly.FieldNumber(0, 0, 100), "PRIORITY")
+            .appendField("优先级");
+        this.appendValueInput("CONDITION")
+            .setCheck(null)
+            .appendField("如果");
+        this.appendValueInput("ACTION")
+            .setCheck(null)
+            .appendField("则执行");
+        this.setColour('#5C81A6');
+        this.setTooltip("定义角色AI规则");
+        this.setHelpUrl("");
+      }
+    };
+
+    // 自定义条件块 - 血量低于
+    Blockly.Blocks['condition_health_below'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("血量低于")
+            .appendField(new Blockly.FieldNumber(50, 0, 100), "PERCENT")
+            .appendField("%");
+        this.setOutput(true, null);
+        this.setColour('#5CA65C');
+        this.setTooltip("当角色血量低于指定百分比时触发");
+        this.setHelpUrl("");
+      }
+    };
+
+    // 自定义动作块 - 治疗
+    Blockly.Blocks['action_heal'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("治疗自身")
+            .appendField(new Blockly.FieldNumber(20, 0, 100), "AMOUNT")
+            .appendField("点血量");
+        this.setOutput(true, null);
+        this.setColour('#A65C5C');
+        this.setTooltip("使用治疗技能恢复血量");
+        this.setHelpUrl("");
+      }
+    };
+
+    // 工具箱配置
+    const toolbox = `
+      <xml id="toolbox" style="display: none">
+        <category name="规则" colour="#5C81A6">
+          <block type="rule_block"></block>
+        </category>
+        <category name="条件" colour="#5CA65C">
+          <block type="condition_health_below"></block>
+        </category>
+        <category name="动作" colour="#A65C5C">
+          <block type="action_heal"></block>
+        </category>
+      </xml>
+    `;
+
+    // 初始化Blockly
+    const workspace = Blockly.inject('blocklyDiv', {
+      toolbox: toolbox,
+      grid: {
+        spacing: 20,
+        length: 3,
+        colour: '#ccc',
+        snap: true
+      },
+      zoom: {
+        controls: true,
+        wheel: true,
+        startScale: 1.0,
+        maxScale: 3,
+        minScale: 0.3,
+        scaleSpeed: 1.2
+      },
+      trashcan: true
+    });
+
+    // 调整大小
+    window.addEventListener('resize', () => {
+      Blockly.svgResize(workspace);
+    });
+  </script>
+</body>
+</html>
